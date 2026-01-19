@@ -93,6 +93,10 @@ function CheckoutContent() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [razorpayLoaded, setRazorpayLoaded] = useState(false);
     const [needsAddress, setNeedsAddress] = useState(!customerName || !customerPhone);
+    const [couponCode, setCouponCode] = useState("");
+    const [couponApplied, setCouponApplied] = useState(false);
+    const [couponDiscount, setCouponDiscount] = useState(0);
+    const [couponError, setCouponError] = useState("");
     const [formData, setFormData] = useState({
         name: customerName,
         phone: customerPhone,
@@ -102,12 +106,41 @@ function CheckoutContent() {
         landmark: landmark,
     });
 
+    // Valid coupons
+    const VALID_COUPONS: { [key: string]: number } = {
+        'test_payment': 99.9,  // 99.9% off for testing
+    };
+
+    // Apply coupon
+    const applyCoupon = () => {
+        const code = couponCode.toLowerCase().trim();
+        if (VALID_COUPONS[code]) {
+            const discountPercent = VALID_COUPONS[code];
+            const discountAmount = Math.round(subtotal * discountPercent / 100);
+            setCouponDiscount(discountAmount);
+            setCouponApplied(true);
+            setCouponError("");
+        } else {
+            setCouponError("Invalid coupon code");
+            setCouponApplied(false);
+            setCouponDiscount(0);
+        }
+    };
+
+    // Remove coupon
+    const removeCoupon = () => {
+        setCouponCode("");
+        setCouponApplied(false);
+        setCouponDiscount(0);
+        setCouponError("");
+    };
+
     // Calculate amounts based on order type
     const subtotal = isSubscription ? totalFromUrl : product.price * quantity;
     const originalTotal = isSubscription ? (299 * totalMeals) : (product.originalPrice * quantity);
     const discount = originalTotal - subtotal;
     const deliveryFee = 0;
-    const total = subtotal;
+    const total = Math.max(1, subtotal - couponDiscount); // Minimum ₹1 for Razorpay
 
     // Load Razorpay script
     useEffect(() => {
@@ -374,6 +407,43 @@ function CheckoutContent() {
                             >
                                 <h2 className="font-display font-bold text-text mb-4">Price Details</h2>
 
+                                {/* Coupon Code Input */}
+                                <div className="mb-4">
+                                    {!couponApplied ? (
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                value={couponCode}
+                                                onChange={(e) => setCouponCode(e.target.value)}
+                                                placeholder="Enter coupon code"
+                                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                            />
+                                            <button
+                                                onClick={applyCoupon}
+                                                className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors"
+                                            >
+                                                Apply
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-4 py-2">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-green-600">✓</span>
+                                                <span className="text-sm font-medium text-green-700">{couponCode.toUpperCase()} applied</span>
+                                            </div>
+                                            <button
+                                                onClick={removeCoupon}
+                                                className="text-sm text-red-500 hover:text-red-700"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    )}
+                                    {couponError && (
+                                        <p className="text-xs text-red-500 mt-1">{couponError}</p>
+                                    )}
+                                </div>
+
                                 <div className="space-y-3 text-sm">
                                     <div className="flex justify-between">
                                         <span className="text-text-muted">Price ({isSubscription ? `${totalMeals} meals` : `${quantity} item${quantity > 1 ? "s" : ""}`})</span>
@@ -383,6 +453,12 @@ function CheckoutContent() {
                                         <span>Discount</span>
                                         <span>-₹{discount.toLocaleString()}</span>
                                     </div>
+                                    {couponApplied && (
+                                        <div className="flex justify-between text-orange-600">
+                                            <span>Coupon Discount</span>
+                                            <span>-₹{couponDiscount.toLocaleString()}</span>
+                                        </div>
+                                    )}
                                     <div className="flex justify-between">
                                         <span className="text-text-muted">Delivery Charges</span>
                                         <span className="text-green-600">FREE</span>
@@ -396,7 +472,7 @@ function CheckoutContent() {
                                     </div>
 
                                     <p className="text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg text-center">
-                                        🎉 You save ₹{discount.toLocaleString()} on this order!
+                                        🎉 You save ₹{(discount + couponDiscount).toLocaleString()} on this order!
                                     </p>
                                 </div>
 
