@@ -338,7 +338,7 @@ function CheckoutContent() {
                                     </div>
                                     <div className="flex items-center justify-between text-sm mt-2">
                                         <span className="text-text-muted">🍽️ Meal Type</span>
-                                        <span className="font-medium text-text capitalize">{mealType} {mealType === "both" ? "(Lunch & Dinner)" : mealType === "lunch" ? "(by 12 PM)" : "(by 7 PM)"}</span>
+                                        <span className="font-medium text-text capitalize">{mealType} {mealType === "both" ? "(Lunch & Dinner)" : mealType === "lunch" ? "(by 11AM to 2PM)" : "(by 6PM to 9PM)"}</span>
                                     </div>
                                     {isSubscription && (
                                         <>
