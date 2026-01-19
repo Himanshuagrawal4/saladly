@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+// State for full menu modal will be added in component
+
 interface Product {
     id: number;
     name: string;
@@ -95,6 +97,7 @@ const filters = [
 export default function Menu() {
     const [activeFilter, setActiveFilter] = useState("all");
     const [isLoading, setIsLoading] = useState(false);
+    const [showFullMenu, setShowFullMenu] = useState(false);
 
     const filteredProducts = products.filter(
         (product) => activeFilter === "all" || product.category === activeFilter
@@ -292,7 +295,7 @@ export default function Menu() {
                     viewport={{ once: true }}
                     className="text-center mt-10"
                 >
-                    <button className="btn-outline">
+                    <button onClick={() => setShowFullMenu(true)} className="btn-outline">
                         View Full Menu
                         <svg
                             className="w-4 h-4 ml-2"
@@ -309,6 +312,44 @@ export default function Menu() {
                         </svg>
                     </button>
                 </motion.div>
+
+                {/* Full Menu Modal */}
+                <AnimatePresence>
+                    {showFullMenu && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+                            onClick={() => setShowFullMenu(false)}
+                        >
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.9, opacity: 0 }}
+                                className="relative max-w-4xl max-h-[90vh] overflow-auto bg-white rounded-2xl"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <button
+                                    onClick={() => setShowFullMenu(false)}
+                                    className="absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg z-10 transition-colors"
+                                >
+                                    <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                <Image
+                                    src="/full_menu.png"
+                                    alt="Saladly Full Menu"
+                                    width={800}
+                                    height={1200}
+                                    className="w-full h-auto"
+                                    priority
+                                />
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </section>
     );
