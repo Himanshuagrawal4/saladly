@@ -327,7 +327,7 @@ export default function Menu() {
                                 initial={{ scale: 0.9, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0.9, opacity: 0 }}
-                                className="relative max-w-4xl max-h-[90vh] overflow-auto bg-white rounded-2xl"
+                                className="relative max-w-4xl w-full max-h-[90vh] overflow-auto bg-white rounded-2xl p-2"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <button
@@ -338,13 +338,11 @@ export default function Menu() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
-                                <Image
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
                                     src="/full_menu.png"
                                     alt="Saladly Full Menu"
-                                    width={800}
-                                    height={1200}
-                                    className="w-full h-auto"
-                                    priority
+                                    className="w-full h-auto rounded-xl"
                                 />
                             </motion.div>
                         </motion.div>
