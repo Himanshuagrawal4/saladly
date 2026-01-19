@@ -71,12 +71,6 @@ export default function Hero() {
                                     />
                                 </svg>
                             </Link>
-                            <Link
-                                href="#subscription"
-                                className="btn-outline text-lg px-8 py-4"
-                            >
-                                Subscribe & Save
-                            </Link>
                         </div>
 
                         {/* Trust Badges */}

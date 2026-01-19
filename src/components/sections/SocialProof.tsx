@@ -57,7 +57,7 @@ const reviews: Review[] = [
 ];
 
 const stats = [
-    { value: "1000+", label: "Happy Customers" },
+    { value: "2000+", label: "Happy Customers" },
     { value: "50,000+", label: "Salads Delivered" },
     { value: "4.9★", label: "Average Rating" },
     { value: "99%", label: "On-Time Delivery" },
@@ -78,7 +78,7 @@ export default function SocialProof() {
                         Customer Love
                     </span>
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-text mb-4">
-                        Trusted by <span className="text-gradient">1000+</span> Healthy Eaters
+                        Trusted by <span className="text-gradient">2000+</span> Healthy Eaters
                     </h2>
                     <p className="text-lg text-text-muted max-w-2xl mx-auto">
                         Don&apos;t just take our word for it. See what our customers have to

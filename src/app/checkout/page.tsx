@@ -474,6 +474,13 @@ function CheckoutContent() {
                                     <p className="text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg text-center">
                                         🎉 You save ₹{(discount + couponDiscount).toLocaleString()} on this order!
                                     </p>
+
+                                    {/* Schedule Customization Notice */}
+                                    <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+                                        <p className="text-xs text-blue-700 text-center font-medium">
+                                            ✨ You can customize your delivery schedule anytime, even after purchase!
+                                        </p>
+                                    </div>
                                 </div>
 
                                 {/* Pay Button */}
