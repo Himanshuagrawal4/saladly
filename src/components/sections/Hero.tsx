@@ -109,6 +109,26 @@ export default function Hero() {
                                 <span className="text-sm text-text-muted ml-1">4.7/5 Rating</span>
                             </div>
                         </motion.div>
+
+                        {/* Service Areas */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.8 }}
+                            className="mt-6 p-4 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-sm"
+                        >
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="text-lg">📍</span>
+                                <span className="text-sm font-semibold text-text">Delivering only in these areas</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1.5">
+                                {["Kharadi", "Ubale Nagar", "Mundhwa", "Keshavnagar", "Wadgaonsheri", "Magarpatta", "Amanora", "Viman Nagar", "Wagholi", "Kalyani Nagar", "Koregaon Park", "Yerwada"].map((area) => (
+                                    <span key={area} className="px-2 py-0.5 bg-primary-50 text-primary-dark text-xs rounded-full">
+                                        {area}
+                                    </span>
+                                ))}
+                            </div>
+                        </motion.div>
                     </motion.div>
 
                     {/* Right Content - Image */}

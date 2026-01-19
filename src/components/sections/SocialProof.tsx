@@ -59,7 +59,7 @@ const reviews: Review[] = [
 const stats = [
     { value: "2000+", label: "Happy Customers" },
     { value: "50,000+", label: "Salads Delivered" },
-    { value: "4.9★", label: "Average Rating" },
+    { value: "4.7★", label: "Average Rating" },
     { value: "99%", label: "On-Time Delivery" },
 ];
 
