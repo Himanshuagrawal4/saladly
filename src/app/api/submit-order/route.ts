@@ -173,8 +173,9 @@ export async function POST(req: Request) {
                         `,
                     };
 
-                    // Fire and forget - don't block the response
-                    transporter.sendMail(mailOptions).catch(err => console.error('Email send error:', err));
+                    // Await email sending to ensure it completes before response
+                    await transporter.sendMail(mailOptions);
+                    console.log(`Email sent for order ${finalOrderId}`);
                 }
             } catch (emailError) {
                 console.error('Email Error:', emailError);
