@@ -775,7 +775,7 @@ function SubscribeContent() {
                     <div className="flex gap-4 mt-6">
                         {currentStep > 1 && (
                             <button
-                                onClick={() => setCurrentStep(currentStep - 1)}
+                                onClick={() => { setCurrentStep(currentStep - 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 className="flex-1 py-4 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary-50 transition-colors"
                             >
                                 Back
@@ -783,7 +783,7 @@ function SubscribeContent() {
                         )}
                         {currentStep < totalSteps ? (
                             <button
-                                onClick={() => setCurrentStep(currentStep + 1)}
+                                onClick={() => { setCurrentStep(currentStep + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 className="flex-1 py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors"
                             >
                                 Continue
