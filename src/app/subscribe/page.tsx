@@ -325,44 +325,39 @@ function SubscribeContent() {
 
             <main className="container-custom py-6">
                 <div className="max-w-3xl mx-auto">
-                    {/* Product Card - Always visible */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="bg-white rounded-2xl shadow-card p-5 mb-6"
-                    >
-                        <div className="flex gap-4">
-                            <div className="relative w-28 h-28 md:w-36 md:h-36 flex-shrink-0">
-                                <Image
-                                    src={product.image}
-                                    alt={product.name}
-                                    fill
-                                    className="rounded-xl object-cover"
-                                    priority
-                                    placeholder="blur"
-                                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAQQBBAMBAAAAAAAAAAAAAQACAwQFBhESIRMxQVH/xAAVAQEBAAAAAAAAAAAAAAAAAAADBP/EABkRAAMBAQEAAAAAAAAAAAAAAAECAwARIf/aAAwDAQACEQMRAD8AxSjDQfHC+2HPZYZKZWjxZzLw24O/iIiaqMmejLp/Z/9k="
-                                />
-                                <div className={`absolute -top-1 -right-1 w-6 h-6 rounded border-2 flex items-center justify-center ${product.category === "veg" ? "border-green-600 bg-white" : "border-red-600 bg-white"
-                                    }`}>
-                                    <div className={`w-3 h-3 rounded-full ${product.category === "veg" ? "bg-green-600" : "bg-red-600"}`} />
+                    {/* Product Card - Only visible on Step 3 (Summary) */}
+                    {currentStep === 3 && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-white rounded-2xl shadow-card p-5 mb-6"
+                        >
+                            <div className="flex gap-4">
+                                <div className="relative w-28 h-28 md:w-36 md:h-36 flex-shrink-0">
+                                    <Image
+                                        src={product.image}
+                                        alt={product.name}
+                                        fill
+                                        className="rounded-xl object-cover"
+                                        priority
+                                        placeholder="blur"
+                                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAQQBBAMBAAAAAAAAAAAAAQACAwQFBhESIRMxQVH/xAAVAQEBAAAAAAAAAAAAAAAAAAADBP/EABkRAAMBAQEAAAAAAAAAAAAAAAECAwARIf/aAAwDAQACEQMRAD8AxSjDQfHC+2HPZYZKZWjxZzLw24O/iIiaqMmejLp/Z/9k="
+                                    />
+                                    <div className={`absolute -top-1 -right-1 w-6 h-6 rounded border-2 flex items-center justify-center ${product.category === "veg" ? "border-green-600 bg-white" : "border-red-600 bg-white"
+                                        }`}>
+                                        <div className={`w-3 h-3 rounded-full ${product.category === "veg" ? "bg-green-600" : "bg-red-600"}`} />
+                                    </div>
+                                </div>
+                                <div className="flex-1">
+                                    <h2 className="font-display font-bold text-lg text-text">{product.name}</h2>
+                                    <p className="text-sm text-primary mt-1">Contains</p>
+                                    <p className="text-xs text-text-muted mt-1 line-clamp-3">{product.contains}</p>
+                                    <p className="text-xs text-text-muted mt-2">{product.nutrition.calories} | {product.nutrition.protein} Protein | {product.nutrition.fat} Fat | {product.nutrition.carbs} Carbs</p>
+                                    <p className="text-sm font-medium text-text mt-2">Lunch/Dinner</p>
                                 </div>
                             </div>
-                            <div className="flex-1">
-                                <h2 className="font-display font-bold text-lg text-text">{product.name}</h2>
-                                <p className="text-sm text-primary mt-1">Contains</p>
-                                <p className="text-xs text-text-muted mt-1 line-clamp-3">{product.contains}</p>
-                                <p className="text-xs text-text-muted mt-2">{product.nutrition.calories} | {product.nutrition.protein} Protein | {product.nutrition.fat} Fat | {product.nutrition.carbs} Carbs</p>
-                                <p className="text-sm font-medium text-text mt-2">Lunch/Dinner</p>
-                                {currentStep === 1 && (
-                                    <div className="mt-3 flex items-center gap-2">
-                                        <span className="text-xl font-bold text-text">₹{selectedPlan.pricePerMeal}</span>
-                                        <span className="text-sm text-text-muted line-through">₹{selectedPlan.originalPrice}</span>
-                                        <span className="text-xs bg-primary text-white px-2 py-0.5 rounded">{selectedPlan.discount}</span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    )}
 
                     {/* Step Content */}
                     <AnimatePresence mode="wait">
