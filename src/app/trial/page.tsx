@@ -159,6 +159,7 @@ export default function TrialOrderPage({
             if (savedData.addressType) setAddressType(savedData.addressType);
             if (savedData.location) {
                 setLocation(savedData.location);
+                setShowAddressForm(true); // Show address form when location is already saved
             }
         }
     }, []);
