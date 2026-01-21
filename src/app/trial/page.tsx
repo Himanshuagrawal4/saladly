@@ -357,7 +357,7 @@ export default function TrialOrderPage({
                             <div>
                                 <label className="block text-sm font-medium text-text mb-2">
                                     <span className="px-2 py-0.5 bg-primary text-white text-xs rounded mr-2">Quantity</span>
-                                    Number of Dinner meals (default: 1)
+                                    Number of meals (default: 1)
                                 </label>
                                 <input
                                     type="number"
