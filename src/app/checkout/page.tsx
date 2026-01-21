@@ -162,6 +162,32 @@ function CheckoutContent() {
         setIsProcessing(true);
 
         try {
+            // Step 1: Create Razorpay Order via server API
+            const orderResponse = await fetch('/api/razorpay/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amount: total * 100, // Convert to paise
+                    currency: 'INR',
+                    receipt: `saladly_${Date.now()}`,
+                    notes: {
+                        product: product.name,
+                        quantity: quantity.toString(),
+                        customerName: formData.name || customerName,
+                        customerPhone: formData.phone || customerPhone,
+                    }
+                })
+            });
+
+            const orderData = await orderResponse.json();
+
+            if (!orderData.success || !orderData.orderId) {
+                alert("Failed to create order. Please try again.");
+                setIsProcessing(false);
+                return;
+            }
+
+            // Step 2: Open Razorpay Checkout with order_id
             const options: RazorpayOptions = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "",
                 amount: total * 100, // Razorpay expects amount in paise
@@ -169,10 +195,11 @@ function CheckoutContent() {
                 name: "Saladly",
                 description: `${product.name} x ${quantity}`,
                 image: "/images/logo.png",
+                order_id: orderData.orderId, // Use the server-generated order_id
                 handler: async function (response: RazorpayResponse) {
-                    // Payment successful - create order NOW
+                    // Payment successful - save order to sheet
                     try {
-                        const orderResponse = await fetch('/api/submit-order', {
+                        const submitResponse = await fetch('/api/submit-order', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -188,11 +215,13 @@ function CheckoutContent() {
                                     : `${product.name} x ${quantity} - ${mealType} - ${deliveryDate}`,
                                 amount: total.toString(),
                                 startDate: deliveryDate,
-                                deliveryInstructions: deliveryInstructions
+                                deliveryInstructions: deliveryInstructions,
+                                razorpayOrderId: orderData.orderId,
+                                razorpayPaymentId: response.razorpay_payment_id,
                             })
                         });
-                        const orderData = await orderResponse.json();
-                        const orderId = orderData.orderId || response.razorpay_payment_id;
+                        const submitData = await submitResponse.json();
+                        const orderId = submitData.orderId || response.razorpay_payment_id;
                         router.push(`/order-success?orderId=${orderId}&method=online`);
                     } catch {
                         // Fallback to Razorpay ID if API fails
